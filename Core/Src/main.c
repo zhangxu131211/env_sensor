@@ -31,11 +31,8 @@
 #include "stdio.h"
 #include "app_bmp580.h"
 #include "app_t117.h"
-#include "temp.h"
 #include "app_e22.h"
-#include "app_e22_protocol.h"
 #include "gps.h"
-#include "task_scheduler.h"  // 调度器头文件
 #include "gy95t.h"
 
 /* USER CODE END Includes */
@@ -116,44 +113,9 @@ int main(void)
 		// APP_BMP580_Test();
 //		APP_T117_Test();
 
-
-	/*整体传感器初始化*/
-	if (Sensor_Global_Init() != 0)
-  {
-      printf("[Sensor] 传感器初始化失败，程序退出！\r\n");
-      Error_Handler(); // 初始化失败可选择进入错误处理
-  }
-	
-//		// 2. 初始化调度器（启动TIM6中断）
-//		Task_Scheduler_Init();
-
-//    // 核心：只用一个顺序采集任务，100ms周期（实际T117 300ms一次，SHT40 100ms一次）
-//    Task_Scheduler_Register(Task_Sensor_Sequence_Collect, 100);
-//    
-//    // BMP580：与温湿度错开，且降低频率到500ms
-//    Task_Scheduler_Register(Task_BMP580_Collect, 500);
-//    
-//    // 应用层读取：仅打印，不操作硬件（改为200ms，减少终端刷屏）
-//    Task_Scheduler_Register(Temp_Collect, 200);
-//    
-//    // 其他任务...
-//    Task_Scheduler_Register(Task_GPS_Collect, 1000);
-//    Task_Scheduler_Register(Task_GY95T_Collect, 10);
-//    Task_Scheduler_Register(Task_E22_Send, 1000);
 	
   while (1)
   {
-	  /*双温度传感器测试*/	
-//        Sensor_Test_Print_Real_Data();
-//        HAL_Delay(100); // 1秒读取一次
-
-		/*E22测试*/		
-//		App_E22_Send_Data(E22_RX_ADDR, E22_RX_CHANNEL, "%x%x%x", 0xAA, 0xBB, 0xCC);
-
-		/*PPS秒脉冲*/
-//		Temp_Collect();
-//		Task_Sensor_Sequence_Collect();
-		Task_BMP580_Collect();
     /* GNSS和RTC同步测试 */    
     /* 原有GPS/RTC同步逻辑（保留，事件驱动） */
 #if 0		
@@ -181,7 +143,6 @@ int main(void)
     }
 
     // 调度器核心循环（唯一的发送入口）
-    Task_Scheduler_Run();
     HAL_Delay(1); // 降低CPU占用
 #endif			
 

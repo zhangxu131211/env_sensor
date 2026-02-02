@@ -599,11 +599,6 @@
           <GroupName>APP</GroupName>
           <Files>
             <File>
-              <FileName>app_tmp117.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\APP\app_tmp117.c</FilePath>
-            </File>
-            <File>
               <FileName>app_sht40.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\APP\app_sht40.c</FilePath>
@@ -624,11 +619,6 @@
               <FilePath>..\APP\app_t117.c</FilePath>
             </File>
             <File>
-              <FileName>temp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\APP\temp.c</FilePath>
-            </File>
-            <File>
               <FileName>app_e22.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\APP\app_e22.c</FilePath>
@@ -642,18 +632,6 @@
         </Group>
         <Group>
           <GroupName>APP/Protocol</GroupName>
-          <Files>
-            <File>
-              <FileName>app_e22_protocol.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\APP\Protocol\app_e22_protocol.c</FilePath>
-            </File>
-            <File>
-              <FileName>task_scheduler.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\APP\Protocol\task_scheduler.c</FilePath>
-            </File>
-          </Files>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>

@@ -37,16 +37,12 @@
 "l431-sensor\bsp_t117.o"
 "l431-sensor\e22.o"
 "l431-sensor\gps.o"
-"l431-sensor\app_tmp117.o"
 "l431-sensor\app_sht40.o"
 "l431-sensor\wind_speed.o"
 "l431-sensor\app_bmp580.o"
 "l431-sensor\app_t117.o"
-"l431-sensor\temp.o"
 "l431-sensor\app_e22.o"
 "l431-sensor\gy95t.o"
-"l431-sensor\app_e22_protocol.o"
-"l431-sensor\task_scheduler.o"
 --library_type=microlib --strict --scatter "L431-SENSOR\L431-SENSOR.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

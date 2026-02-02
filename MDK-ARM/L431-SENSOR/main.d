@@ -53,11 +53,8 @@ l431-sensor\main.o: ..\APP\app_t117.h
 l431-sensor\main.o: ..\BSP\bsp_t117.h
 l431-sensor\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 l431-sensor\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-l431-sensor\main.o: ..\APP\temp.h
 l431-sensor\main.o: ..\APP\app_e22.h
 l431-sensor\main.o: ..\BSP\e22.h
 l431-sensor\main.o: ..\BSP\e22_conf.h
-l431-sensor\main.o: ..\APP\Protocol\app_e22_protocol.h
-l431-sensor\main.o: ..\APP\gy95t.h
 l431-sensor\main.o: ..\BSP\gps.h
-l431-sensor\main.o: ..\APP\Protocol\task_scheduler.h
+l431-sensor\main.o: ..\APP\gy95t.h
