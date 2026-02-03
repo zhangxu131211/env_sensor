@@ -34,6 +34,8 @@
 #include "app_e22.h"
 #include "gps.h"
 #include "gy95t.h"
+#include "app_env_collect.h"
+#include "system_state_machine.h"  
 
 /* USER CODE END Includes */
 
@@ -103,19 +105,21 @@ int main(void)
   MX_I2C3_Init();
 	MX_DMA_Init();
 	MX_RTC_Init();
-	MX_TIM6_Init();
+//	MX_TIM6_Init();
 	MX_USART1_UART_Init();
   MX_USART2_UART_Init();
 	MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-		/*温湿度，大气压传感器单独测试*/
-//		SHT40AD1B_Test();
-		// APP_BMP580_Test();
-//		APP_T117_Test();
-
+    
+    // ========== 系统状态机初始化 ==========
+    printf("\r\n========== System Start ==========\r\n");
+    System_StateMachine_Init();  // 初始化状态机，包含所有传感器初始化
+    printf("========== System Ready ==========\r\n\r\n");
 	
   while (1)
   {
+    // ========== 系统状态机主任务 ==========
+    System_StateMachine_MainTask();  // 无阻塞式状态机，定时采集并发送数据
     /* GNSS和RTC同步测试 */    
     /* 原有GPS/RTC同步逻辑（保留，事件驱动） */
 #if 0		
@@ -127,24 +131,20 @@ int main(void)
       {
         RTC_Update_From_GPS(g_gps_data.utc_time, g_gps_data.date);
         printf("\n===== GPS有效（同步RTC）=====\r\n");
-//        GPS_Print_Result();
-//        RTC_Print_Time();
-        // 可选：GPS有效时额外触发一次发送（非必须）
-        // Task_E22_Send();
+       GPS_Print_Result();
+       RTC_Print_Time();
       }
       else
       {
         printf("\n===== GPS无效（使用RTC）=====\r\n");
         printf("GPS解析失败/无定位信号！\r\n");
-//        RTC_Print_Time();
+       RTC_Print_Time();
       }
       gnss_rx_len = 0;
       memset(gnss_rx_buf, 0, GNSS_BUF_SIZE);  
     }
 
-    // 调度器核心循环（唯一的发送入口）
-    HAL_Delay(1); // 降低CPU占用
-#endif			
+#endif	   	
 
     /* USER CODE BEGIN 3 */
   }

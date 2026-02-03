@@ -3,19 +3,19 @@
         {
             "name": "L431-SENSOR",
             "includePath": [
-                "e:\\STM32 project\\Wireless_environmental_sensor\\my_code\\L431-TEMP_E22\\Core\\Inc",
-                "e:\\STM32 project\\Wireless_environmental_sensor\\my_code\\L431-TEMP_E22\\Drivers\\STM32L4xx_HAL_Driver\\Inc",
-                "e:\\STM32 project\\Wireless_environmental_sensor\\my_code\\L431-TEMP_E22\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\Legacy",
-                "e:\\STM32 project\\Wireless_environmental_sensor\\my_code\\L431-TEMP_E22\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\Include",
-                "e:\\STM32 project\\Wireless_environmental_sensor\\my_code\\L431-TEMP_E22\\Drivers\\CMSIS\\Include",
-                "e:\\STM32 project\\Wireless_environmental_sensor\\my_code\\L431-TEMP_E22\\APP",
-                "e:\\STM32 project\\Wireless_environmental_sensor\\my_code\\L431-TEMP_E22\\BSP",
-                "e:\\STM32 project\\Wireless_environmental_sensor\\my_code\\L431-TEMP_E22\\APP\\Protocol",
+                "e:\\STM32 project\\Wireless_environmental_sensor\\code\\env_sensor\\Core\\Inc",
+                "e:\\STM32 project\\Wireless_environmental_sensor\\code\\env_sensor\\Drivers\\STM32L4xx_HAL_Driver\\Inc",
+                "e:\\STM32 project\\Wireless_environmental_sensor\\code\\env_sensor\\Drivers\\STM32L4xx_HAL_Driver\\Inc\\Legacy",
+                "e:\\STM32 project\\Wireless_environmental_sensor\\code\\env_sensor\\Drivers\\CMSIS\\Device\\ST\\STM32L4xx\\Include",
+                "e:\\STM32 project\\Wireless_environmental_sensor\\code\\env_sensor\\Drivers\\CMSIS\\Include",
+                "e:\\STM32 project\\Wireless_environmental_sensor\\code\\env_sensor\\APP",
+                "e:\\STM32 project\\Wireless_environmental_sensor\\code\\env_sensor\\BSP",
+                "e:\\STM32 project\\Wireless_environmental_sensor\\code\\env_sensor\\APP\\Protocol",
                 "D:\\Keil_v5\\ARM\\ARMCC\\include",
                 "D:\\Keil_v5\\ARM\\ARMCC\\include\\rw",
-                "e:\\STM32 project\\Wireless_environmental_sensor\\my_code\\L431-TEMP_E22\\MDK-ARM",
-                "e:\\STM32 project\\Wireless_environmental_sensor\\my_code\\L431-TEMP_E22\\Core\\Src",
-                "e:\\STM32 project\\Wireless_environmental_sensor\\my_code\\L431-TEMP_E22\\Drivers\\STM32L4xx_HAL_Driver\\Src"
+                "e:\\STM32 project\\Wireless_environmental_sensor\\code\\env_sensor\\MDK-ARM",
+                "e:\\STM32 project\\Wireless_environmental_sensor\\code\\env_sensor\\Core\\Src",
+                "e:\\STM32 project\\Wireless_environmental_sensor\\code\\env_sensor\\Drivers\\STM32L4xx_HAL_Driver\\Src"
             ],
             "defines": [
                 "USE_HAL_DRIVER",

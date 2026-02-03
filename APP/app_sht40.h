@@ -22,6 +22,8 @@ extern "C" {
 
 #define SHT40AD1B_I2C_ADDR  0x8A  // SHT40 I2C地址（7位0x44 << 1）
 
+extern float sht40_humidity;
+extern float sht40_temperature;
 
 /* 函数声明 ------------------------------------------------------------------*/
 int32_t SHT40AD1B_Init(void);

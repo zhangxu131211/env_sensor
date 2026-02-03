@@ -100,7 +100,7 @@ int32_t SHT40AD1B_ReadData(float *hum, float *temp)
     sht40_humidity = data[0];
     sht40_temperature = data[1];
 
-    printf("SHT40AD1B Data - Humidity: %.2f%%, Temperature: %.2f¡ãC\r\n", *hum, *temp);
+    // printf("SHT40AD1B Data - Humidity: %.2f%%, Temperature: %.2f¡ãC\r\n", *hum, *temp);
     return 0;
 }
 

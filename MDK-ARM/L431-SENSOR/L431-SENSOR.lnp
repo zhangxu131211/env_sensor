@@ -43,6 +43,8 @@
 "l431-sensor\app_t117.o"
 "l431-sensor\app_e22.o"
 "l431-sensor\gy95t.o"
+"l431-sensor\app_env_collect.o"
+"l431-sensor\system_state_machine.o"
 --library_type=microlib --strict --scatter "L431-SENSOR\L431-SENSOR.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

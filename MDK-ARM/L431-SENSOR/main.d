@@ -58,3 +58,5 @@ l431-sensor\main.o: ..\BSP\e22.h
 l431-sensor\main.o: ..\BSP\e22_conf.h
 l431-sensor\main.o: ..\BSP\gps.h
 l431-sensor\main.o: ..\APP\gy95t.h
+l431-sensor\main.o: ..\APP\app_env_collect.h
+l431-sensor\main.o: ..\APP\system_state_machine.h

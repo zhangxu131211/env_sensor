@@ -628,10 +628,22 @@
               <FileType>1</FileType>
               <FilePath>..\APP\gy95t.c</FilePath>
             </File>
+            <File>
+              <FileName>app_env_collect.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APP\app_env_collect.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>APP/Protocol</GroupName>
+          <Files>
+            <File>
+              <FileName>system_state_machine.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APP\system_state_machine.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>
