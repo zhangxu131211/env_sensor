@@ -20,7 +20,7 @@ HAL_StatusTypeDef GY95T_WriteReg(uint8_t reg_addr, uint8_t data)
  */
 HAL_StatusTypeDef GY95T_Init(uint8_t freq_level)
 {
-    HAL_Delay(300); // 上电稳定延时
+    HAL_Delay(30); // 上电稳定延时
     freq_level = (freq_level > 3) ? 3 : freq_level; // 限制频率范围
     return GY95T_WriteReg(0x02, freq_level); // 配置更新频率
 }
@@ -114,7 +114,7 @@ HAL_StatusTypeDef GY95T_AutoCalibrate(void)
     DEBUG_LOG("=====================================\r\n");
     DEBUG_LOG("Auto Calibration Start!\r\n");
     DEBUG_LOG("Step 1: Keep module HORIZONTAL & STABLE\r\n");
-    HAL_Delay(1000);
+    HAL_Delay(10);
     
     // 加陀校准（手册0x57指令，2秒稳定时间）
     if (GY95T_Calibrate(0x57) == HAL_OK)
@@ -122,7 +122,7 @@ HAL_StatusTypeDef GY95T_AutoCalibrate(void)
         for (int i = 2; i > 0; i--)
         {
             DEBUG_LOG("Acc/Gyro Calibrating... %ds\r\n", i);
-            HAL_Delay(1000);
+            HAL_Delay(10);
         }
         DEBUG_LOG("Step 1: Acc/Gyro Calibration Success!\r\n");
     }
@@ -140,8 +140,8 @@ HAL_StatusTypeDef GY95T_AutoCalibrate(void)
     {
         for (int i = 5; i > 0; i--)
         {
-            DEBUG_LOG("Mag Calibrating... Remaining %ds\r\n", i);
-            HAL_Delay(1000);
+            DEBUG_LOG("Mag Calibrating... Remaining %d0ms\r\n", i);
+            HAL_Delay(10);
         }
         GY95T_Calibrate(0x59);
         GY95T_Calibrate(0x5A);

@@ -386,6 +386,10 @@ void System_StateMachine_MainTask(void)
                  // 打包协议帧
                  Protocol_PackFrame();
                 
+							  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
+								HAL_Delay(100);
+							  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
+
                 //  重置采集完成标志，准备下一次采集
                 env_collect_complete = false;
                 gps_collect_complete = false;
@@ -418,6 +422,21 @@ void EnvCollect_StateMachine(void)
              {
                  float temperature;
                  int ret = APP_T117_ReadTemperature(&temperature);
+								 if(ret != 0)
+									{
+										// 初始化前复位I2C总线
+										I2C_SoftReset(&hi2c2);
+//										    // 初始化T117
+//											 if(APP_T117_Init() != APP_T117_OK)
+//												{
+//													printf("[T117] Init Failed\r\n");
+//												} else {
+//													printf("[T117] Init OK\r\n");
+//												}
+												HAL_Delay(5);
+												env_collect_state = 1;
+											 break;
+									}
                  printf("T117 Read Temp Result: %d\r\n", ret);
                  g_t117_temperature = temperature;
                  env_collect_time = HAL_GetTick();
@@ -532,7 +551,8 @@ void GPSCollect_StateMachine(void)
             {
                 // DEBUG_LOG("=== 检测到完整GPS帧 ===\r\n");
                 // DEBUG_LOG("GPS帧长度: %d 字节\r\n", gnss_rx_len);
-                // DEBUG_LOG("GPS完整数据: %.*s\r\n", gnss_rx_len, gnss_rx_buf);
+                 printf("GPS完整数据: %.*s\r\n", gnss_rx_len, gnss_rx_buf);
+//							printf("GPS完整数据: %.*s\r\n", gnss_rx_buf);
                 
                 // 按照现有的GPS处理逻辑
                 gnss_rx_complete = 0;

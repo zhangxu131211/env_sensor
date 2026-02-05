@@ -120,7 +120,7 @@ int8_t EnvSensor_Init(void)
          err_cnt++;
         DEBUG_LOG("[T117] Init Failed\r\n");
      }
-    HAL_Delay(5);
+     HAL_Delay(5);
     
     // ≥ı ºªØSHT40
      if(SHT40AD1B_Init() != 0)

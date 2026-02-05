@@ -35,7 +35,7 @@ extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart2;
 extern UART_HandleTypeDef huart3;
 
-#define GNSS_BUF_SIZE 2048
+#define GNSS_BUF_SIZE 80
 extern uint8_t gnss_rx_buf[GNSS_BUF_SIZE];
 extern uint16_t gnss_rx_len;
 extern uint8_t gnss_rx_complete;

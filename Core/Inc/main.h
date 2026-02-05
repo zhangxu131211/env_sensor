@@ -86,7 +86,7 @@ void Error_Handler(void);
 #define DEBUG_LOG(fmt, ...)
 #endif
 
-#define DATA_LOG_ENABLE
+//#define DATA_LOG_ENABLE
 
 #ifdef DATA_LOG_ENABLE
 #define DATA_LOG(fmt, ...)  printf("[%s | %s:%d] " fmt "\n", \

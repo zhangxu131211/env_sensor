@@ -37,13 +37,14 @@ APP_T117_ErrCode APP_T117_ReadTemperature(float *pTemp) {
 
     // 2. 调用BSP层读取温度（含CRC校验）
     if (!BSP_T117_GetTemperature(&hi2c2, s_t117Buffer, pTemp)) {
-        DEBUG_LOG("[T117] Read Err: CRC failed or I2C error\r\n");
+				
+        printf("[T117] Read Err: CRC failed or I2C error\r\n");
         return APP_T117_READ_FAIL;
     }
 
     // 3. 温度值范围校验（T117P量程：-103℃~153℃）
     if (*pTemp < -103.0f || *pTemp > 153.0f) {
-        DEBUG_LOG("[T117] Read Warn: Temp out of range (%.4f℃)\r\n", *pTemp);
+        printf("[T117] Read Warn: Temp out of range (%.4f℃)\r\n", *pTemp);
     }
 
     return APP_T117_OK;

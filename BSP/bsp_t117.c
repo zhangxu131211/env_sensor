@@ -239,14 +239,14 @@ bool BSP_T117_GetTemperature(I2C_HandleTypeDef* hi2c, uint8_t* pBuffer, float* p
 
     // 3. 读取温度低位、高位、CRC校验字节
     if (!BSP_T117_ReadTempRegs(hi2c, pBuffer)) {
-        printf("[T117] 测温失败！ ---> 2 \r\n");
+//        printf("[T117] 测温失败！ ---> 2 \r\n");
         return false;
     }
 
     // 4. CRC校验（前2字节温度数据，对比第3字节CRC）
     uint8_t crcCalc = BSP_T117_CRC8(pBuffer, 2);
     if (crcCalc != pBuffer[2]) {
-        printf("[T117] 测温失败！ ---> 3 \r\n");
+//        printf("[T117] 测温失败！ ---> 3 \r\n");
         return false;  // CRC校验失败
     }
 

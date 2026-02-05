@@ -37,7 +37,7 @@ UART_HandleTypeDef huart3;
 DMA_HandleTypeDef hdma_usart3_rx;
 DMA_HandleTypeDef hdma_usart3_tx;
 
-
+static uint8_t frame_header[7] = {0};  // 存储帧头（如$GNRMC长度为6，留1位给\0）
 
 /* USART1 init function */
 
@@ -210,7 +210,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 		/* USART2 interrupt Init */
-    HAL_NVIC_SetPriority(USART2_IRQn, 3, 0);
+    HAL_NVIC_SetPriority(USART2_IRQn, 3, 1);
     HAL_NVIC_EnableIRQ(USART2_IRQn);
   /* USER CODE BEGIN USART2_MspInit 1 */
 
@@ -379,6 +379,70 @@ int fgetc(FILE *f)
 	return (ch);
 }
 
+//void USART1_IRQHandler(void)
+//{
+//  uint8_t rx_data = 0;
+////	int rx_data_len = 0;
+
+
+//  // 1. 处理字节接收（RXNE）
+//  if(__HAL_UART_GET_FLAG(&huart1, UART_FLAG_RXNE))
+//  {
+//    rx_data = (uint8_t)(huart1.Instance->RDR & 0x00FF); 
+
+//    if(gnss_rx_len < GNSS_BUF_SIZE - 1)
+//    {
+////			if (gnss_rx_len < 6) {
+////				frame_header[gnss_rx_len++] = rx_data;
+////				printf("\r\n  1 gnss_rx_len = %d, %s\r\n", gnss_rx_len, frame_header);
+////			} else if (gnss_rx_len == 6) {
+////				printf("\r\n  2 gnss_rx_len = %d, %s\r\n", gnss_rx_len, frame_header);
+////				if(strcmp("$GNRMC", frame_header) == 0) {
+////					strncpy(frame_header, gnss_rx_buf, gnss_rx_len);
+////					gnss_rx_len++;
+////					printf("\r\n  3 gnss_rx_len = %d\r\n", gnss_rx_len);
+////				} else {
+////					gnss_rx_len = 0;
+////					printf("\r\n  4 gnss_rx_len = %d\r\n", gnss_rx_len);
+////				}
+////			} else {
+////				printf("\r\n  5 gnss_rx_len = %d\r\n", gnss_rx_len);
+////				gnss_rx_buf[gnss_rx_len++] = rx_data;
+////			}
+
+//      gnss_rx_buf[gnss_rx_len++] = rx_data;
+//      
+//      // 核心：检测 NMEA 帧尾标志 \r\n
+//      //if(gnss_rx_len >= 7)
+//			if(gnss_rx_len >= 2)	
+//      {
+//        // 判断最后两个字节是否是 \r\n
+//        if(gnss_rx_buf[gnss_rx_len-2] == '\r' && gnss_rx_buf[gnss_rx_len-1] == '\n')
+//        {
+//          gnss_frame_flag = 1; // 标记找到完整帧
+//        }
+//      }
+//    }
+//    __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_RXNE);
+//  }
+
+//  // 2. 处理空闲中断（兜底：防止无\r\n时数据滞留）
+//  if(__HAL_UART_GET_FLAG(&huart1, UART_FLAG_IDLE))
+//  {
+//    __HAL_UART_CLEAR_IDLEFLAG(&huart1);
+//    // 只有找到帧尾 或 缓冲区快满时，才标记完成
+//    if(gnss_frame_flag || gnss_rx_len >= GNSS_BUF_SIZE - 2)
+//    {
+//      gnss_rx_buf[gnss_rx_len] = '\0';
+//      gnss_rx_complete = 1;
+//      // 重置标志
+//      gnss_frame_flag = 0;
+//    }
+//  }
+
+//  HAL_UART_IRQHandler(&huart1);
+//}
+
 void USART1_IRQHandler(void)
 {
   uint8_t rx_data = 0;
@@ -421,7 +485,5 @@ void USART1_IRQHandler(void)
 
   HAL_UART_IRQHandler(&huart1);
 }
-
-
 
 /* USER CODE END 1 */
