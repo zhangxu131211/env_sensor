@@ -11,6 +11,7 @@
 #include "sht40ad1b_reg.h"
 #include "i2c.h"
 #include "stdio.h"
+#include "main.h"
 
 /* 全局变量 ------------------------------------------------------------------*/
 /* 定义I2C句柄（需与硬件初始化的I2C句柄一致） */
@@ -46,19 +47,19 @@ int32_t SHT40AD1B_Init(void)
     int32_t ret = sht40ad1b_device_id_get(&sht40ad1b_ctx, &dev_id);
     if (ret != 0)
     {
-        printf("SHT40AD1B Read ID Failed! Ret: %d\r\n", ret);
+        DEBUG_LOG("SHT40AD1B Read ID Failed! Ret: %d\r\n", ret);
         return -1;
     }
-    printf("SHT40AD1B Device ID: 0x%02X\r\n", dev_id);
+    DEBUG_LOG("SHT40AD1B Device ID: 0x%02X\r\n", dev_id);
 
     /* 3. 验证ID合法性（SHT40系列典型ID：0x89/0x00，根据手册调整） */
     if (dev_id != 0x89 && dev_id != 0x00)
     {
-        printf("SHT40AD1B ID Invalid! ID: 0x%02X\r\n", dev_id);
+        DEBUG_LOG("SHT40AD1B ID Invalid! ID: 0x%02X\r\n", dev_id);
         return -2;
     }
 
-    printf("SHT40AD1B Init Success!\r\n");
+    DEBUG_LOG("SHT40AD1B Init Success!\r\n");
     return 0;
 }
 
@@ -82,7 +83,7 @@ int32_t SHT40AD1B_ReadData(float *hum, float *temp)
     int32_t ret = sht40ad1b_data_get(&sht40ad1b_ctx, data);
     if (ret != 0)
     {
-        printf("SHT40AD1B Read Data Failed! Ret: %d\r\n", ret);
+        DEBUG_LOG("SHT40AD1B Read Data Failed! Ret: %d\r\n", ret);
         return -2;
     }
 
@@ -90,7 +91,7 @@ int32_t SHT40AD1B_ReadData(float *hum, float *temp)
     if (data[0] < 0.0f || data[0] > 100.0f || 
         data[1] < -40.0f || data[1] > 125.0f)
     {
-        printf("SHT40AD1B Data Out Of Range! H:%.2f, T:%.2f\r\n", data[0], data[1]);
+        DEBUG_LOG("SHT40AD1B Data Out Of Range! H:%.2f, T:%.2f\r\n", data[0], data[1]);
         return -3;
     }
 
@@ -100,7 +101,7 @@ int32_t SHT40AD1B_ReadData(float *hum, float *temp)
     sht40_humidity = data[0];
     sht40_temperature = data[1];
 
-    // printf("SHT40AD1B Data - Humidity: %.2f%%, Temperature: %.2f°C\r\n", *hum, *temp);
+    // DEBUG_LOG("SHT40AD1B Data - Humidity: %.2f%%, Temperature: %.2f°C\r\n", *hum, *temp);
     return 0;
 }
 
@@ -172,7 +173,7 @@ void SHT40AD1B_Test(void)
 {
     if (SHT40AD1B_Init() != 0)
     {
-        printf("SHT40AD1B Init Failed!\r\n");
+        DEBUG_LOG("SHT40AD1B Init Failed!\r\n");
         return;
     }
 
@@ -181,7 +182,7 @@ void SHT40AD1B_Test(void)
         float hum, temp;
         if (SHT40AD1B_ReadData(&hum, &temp) == 0)
         {
-            printf("业务使用 - 湿度: %.2f%%, 温度: %.2f°C\r\n", hum, temp);
+            DEBUG_LOG("业务使用 - 湿度: %.2f%%, 温度: %.2f°C\r\n", hum, temp);
         }
         HAL_Delay(1000);  // 1秒读取一次
     }

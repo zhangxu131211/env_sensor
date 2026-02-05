@@ -228,22 +228,25 @@ bool BSP_T117_StartSingleConv(I2C_HandleTypeDef* hi2c, uint8_t* pBuffer) {
 bool BSP_T117_GetTemperature(I2C_HandleTypeDef* hi2c, uint8_t* pBuffer, float* pTemp) {
     if (hi2c == NULL || pBuffer == NULL || pTemp == NULL) return false;
 
-    // 1. 启动单次测温
-    if (!BSP_T117_StartSingleConv(hi2c, pBuffer)) {
-        return false;
-    }
+    // // 1. 启动单次测温
+    // if (!BSP_T117_StartSingleConv(hi2c, pBuffer)) {
+    //     printf("[T117] 测温失败！ ---> 1 \r\n");
+    //     return false;
+    // }
 
-    // 2. 等待转换完成（AVG8对应转换时间5.2ms，预留冗余）
-    HAL_Delay(7);
+    // // 2. 等待转换完成（AVG8对应转换时间5.2ms，预留冗余）
+    // HAL_Delay(7);
 
     // 3. 读取温度低位、高位、CRC校验字节
     if (!BSP_T117_ReadTempRegs(hi2c, pBuffer)) {
+        printf("[T117] 测温失败！ ---> 2 \r\n");
         return false;
     }
 
     // 4. CRC校验（前2字节温度数据，对比第3字节CRC）
     uint8_t crcCalc = BSP_T117_CRC8(pBuffer, 2);
     if (crcCalc != pBuffer[2]) {
+        printf("[T117] 测温失败！ ---> 3 \r\n");
         return false;  // CRC校验失败
     }
 

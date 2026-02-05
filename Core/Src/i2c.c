@@ -40,7 +40,6 @@ void MX_I2C2_Init(void)
   /* USER CODE END I2C2_Init 1 */
   hi2c2.Instance = I2C2;
   hi2c2.Init.Timing = 0x10D19CE4;		//400khz
-//	hi2c2.Init.Timing = 0x30420F13;			//100kHz 
   hi2c2.Init.OwnAddress1 = 0;
   hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
@@ -242,63 +241,5 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef* i2cHandle)
 }
 
 /* USER CODE BEGIN 1 */
-void I2C_BusRecovery(void)
-{
-    // Step 1: 检查 SDA 是否被拉低（可选优化）
-    // 如果 SDA 已释放，无需恢复
-    if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_SET) {
-        return;
-    }
 
-    // Step 2: 将 SCL/SDA 临时配置为开漏输出 GPIO
-    GPIO_InitTypeDef gpio_cfg = {0};
-    gpio_cfg.Mode = GPIO_MODE_OUTPUT_OD;
-    gpio_cfg.Pull = GPIO_NOPULL;
-    gpio_cfg.Speed = GPIO_SPEED_FREQ_HIGH;
-
-    // 先配置 SCL 为输出
-    gpio_cfg.Pin = GPIO_PIN_10;
-    HAL_GPIO_Init(GPIOB, &gpio_cfg);
-
-    // 再配置 SDA 为输出（注意：有些从机会在 SDA 输入时锁死，需先设为输出）
-    gpio_cfg.Pin = GPIO_PIN_11;
-    HAL_GPIO_Init(GPIOB, &gpio_cfg);
-
-    // 确保初始状态：SCL=HIGH, SDA=HIGH
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_SET);
-    HAL_Delay(1); // 短暂稳定
-
-    // Step 3: 产生最多 9 个 SCL 脉冲，直到 SDA 被释放
-    uint8_t pulses = 0;
-    while (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_RESET && pulses < 9) {
-        // 拉低 SCL
-        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
-        HAL_Delay(2); // t_LOW >= 4.7us（标准模式），这里用 2ms 更安全
-
-        // 拉高 SCL
-        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
-        HAL_Delay(2); // t_HIGH
-
-        pulses++;
-    }
-
-    // Step 4: 发送 STOP 条件（SDA 从低→高，SCL 保持高）
-    // 先确保 SDA 是低（若未释放，强制拉低；若已释放则跳过）
-    if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_SET) {
-        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_RESET);
-        HAL_Delay(2);
-    }
-    // SCL 必须为高
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
-    HAL_Delay(2);
-    // SDA 从低拉高 → STOP
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_SET);
-    HAL_Delay(2);
-
-    // Step 5: 恢复为 I2C 外设功能（重新初始化 I2C）
-    MX_I2C2_Init();  // 重新调用 CubeMX 生成的初始化函数
-		
-		printf("Restart i2c2\r\n");
-}
 /* USER CODE END 1 */

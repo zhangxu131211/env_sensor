@@ -9,11 +9,11 @@
 #define E22_TX_CHANNEL				2
 
 //地面接收方
-#define E22_RX_ADDR						3
+#define E22_RX_ADDR					3
 #define E22_RX_CHANNEL				4
 
 // 定义E22发送缓冲区最大长度（根据模块手册，建议≤128字节）
-#define E22_SEND_BUF_MAX_LEN  128
+#define E22_SEND_BUF_MAX_LEN  256
 
 /**
  * @brief  E22模块初始化（封装底层E22_Init/E22_StartReceive）

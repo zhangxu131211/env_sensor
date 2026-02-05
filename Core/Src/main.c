@@ -110,16 +110,60 @@ int main(void)
   MX_USART2_UART_Init();
 	MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-    
-    // ========== 系统状态机初始化 ==========
-    printf("\r\n========== System Start ==========\r\n");
+//  APP_BMP580_Test();  // 测试BMP580初始化和数据读取  
+
+//    int8_t ret;
+
+//    /* 测试开始提示 */
+//    printf("======== BMP580 Test Start ========\r\n");
+
+//    /* 初始化传感器 */
+//    ret = APP_BMP580_Init(&bmp580_dev);
+//    if (ret != BMP5_OK) {
+
+//    }
+//    printf("Init Success\r\n");
+
+//    /* 配置传感器 */
+//    ret = APP_BMP580_Config(&bmp580_dev);
+//    if (ret != BMP5_OK) {
+//        printf("Config Failed %d\r\n", ret);
+//    }
+//    printf("Config Success\r\n");
+
+//    int8_t ret;
+
+//    /* 初始化传感器 */
+//    ret = APP_BMP580_Init(&bmp580_dev);
+//    if (ret != BMP5_OK) {
+//        printf("BMP580 Init Failed %d\r\n", ret);
+//    } else {
+//        printf("BMP580 Init Success\r\n");
+//    }
+
+//    /* 配置传感器 */
+//    ret = APP_BMP580_Config(&bmp580_dev);
+//    if (ret != BMP5_OK) {
+//        printf("Config Failed %d\r\n", ret);
+//    } else {
+//			printf("BMP580 Config Success\r\n");
+//		}
+
+//	BMP580_Init();
+
+  #if 1 
+  // ========== 系统状态机初始化 ==========
+    DEBUG_LOG("\r\n========== System Start ==========\r\n");
     System_StateMachine_Init();  // 初始化状态机，包含所有传感器初始化
-    printf("========== System Ready ==========\r\n\r\n");
-	
+    DEBUG_LOG("========== System Ready ==========\r\n\r\n");
+	#endif
   while (1)
   {
+  #if 1  
     // ========== 系统状态机主任务 ==========
     System_StateMachine_MainTask();  // 无阻塞式状态机，定时采集并发送数据
+  #endif  
+
     /* GNSS和RTC同步测试 */    
     /* 原有GPS/RTC同步逻辑（保留，事件驱动） */
 #if 0		
@@ -130,14 +174,14 @@ int main(void)
       if(parse_ret == 1 && g_gps_data.status == 'A')
       {
         RTC_Update_From_GPS(g_gps_data.utc_time, g_gps_data.date);
-        printf("\n===== GPS有效（同步RTC）=====\r\n");
+        DEBUG_LOG("\n===== GPS有效（同步RTC）=====\r\n");
        GPS_Print_Result();
        RTC_Print_Time();
       }
       else
       {
-        printf("\n===== GPS无效（使用RTC）=====\r\n");
-        printf("GPS解析失败/无定位信号！\r\n");
+        DEBUG_LOG("\n===== GPS无效（使用RTC）=====\r\n");
+        DEBUG_LOG("GPS解析失败/无定位信号！\r\n");
        RTC_Print_Time();
       }
       gnss_rx_len = 0;
@@ -230,7 +274,7 @@ void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+     ex: DEBUG_LOG("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

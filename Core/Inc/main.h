@@ -75,6 +75,25 @@ void Error_Handler(void);
 #define E22_AUX_GPIO_Port GPIOB
 
 
+// #define DEBUG_ENABLE
+
+#ifdef DEBUG_ENABLE
+#include "stdio.h"
+// 复用你的调试日志宏（带文件、函数、行号）
+#define DEBUG_LOG(fmt, ...)  printf("[%s | %s:%d] " fmt "\n", \
+                                  __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#else
+#define DEBUG_LOG(fmt, ...)
+#endif
+
+#define DATA_LOG_ENABLE
+
+#ifdef DATA_LOG_ENABLE
+#define DATA_LOG(fmt, ...)  printf("[%s | %s:%d] " fmt "\n", \
+                                  __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#else
+#define DATA_LOG(fmt, ...)
+#endif
 
 /* USER CODE BEGIN Private defines */
 

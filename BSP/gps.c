@@ -1,6 +1,7 @@
 #include "gps.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "main.h"
 
 // ************************** 全局变量定义 **************************
 GPS_RMC_Data_t g_gps_data;  // 全局GPS解析数据
@@ -185,7 +186,7 @@ void GPS_Format_Time(char *out_time, const char *utc_time)
     }
 
     // 按 HH:MM:SS 格式拼接
-    sprintf(out_time, "%c%c:%c%c:%c%c",
+    DEBUG_LOG("out_time %c%c:%c%c:%c%c",
             utc_time[0], utc_time[1],
             utc_time[2], utc_time[3],
             utc_time[4], utc_time[5]);
@@ -215,7 +216,7 @@ void GPS_UTC_To_Beijing_Time(char *beijing_time, const char *utc_time)
     }
 
     // 格式化为 HH:MM:SS
-    sprintf(beijing_time, "%02d:%02d:%02d", hh, mm, ss);
+    DEBUG_LOG("beijing: %02d:%02d:%02d", hh, mm, ss);
 }
 
 /**
@@ -243,7 +244,7 @@ void GPS_Format_Date(char *out_date, const char *gps_date)
     int year = 2000 + yy;
 
     // 格式化为「YYYY年MM月DD日」
-    sprintf(out_date, "%d年%d月%d日", year, mm, dd);
+    DEBUG_LOG( "out_date: %d年%d月%d日", year, mm, dd);
 }
 
 /**
@@ -259,28 +260,28 @@ void GPS_Print_Result(void)
     GPS_UTC_To_Beijing_Time(beijing_time, g_gps_data.utc_time);
     GPS_Format_Date(fmt_date, g_gps_data.date);
 
-    printf("===== LC29H GPS解析结果 =====\r\n");
-    printf("UTC时间：%s\r\n", fmt_time);
-    printf("北京时间：%s\r\n", beijing_time);   
-    printf("定位状态：%c（A=有效，V=无效）\r\n", g_gps_data.status);
+    DEBUG_LOG("===== LC29H GPS解析结果 =====\r\n");
+    DEBUG_LOG("UTC时间：%s\r\n", fmt_time);
+    DEBUG_LOG("北京时间：%s\r\n", beijing_time);   
+    DEBUG_LOG("定位状态：%c（A=有效，V=无效）\r\n", g_gps_data.status);
   
     if(g_gps_data.is_valid && g_gps_data.status == 'A')
     {
-        printf("纬度：%.6f °%c\r\n", g_gps_data.latitude, g_gps_data.lat_dir);
-        printf("经度：%.6f °%c\r\n", g_gps_data.longitude, g_gps_data.lon_dir);
-        printf("航向：%.2f °\r\n", g_gps_data.course);
-        printf("速度：%.2f 节 / %.2f 公里/小时\r\n", g_gps_data.speed_knot, g_gps_data.speed_kmh);
+        DEBUG_LOG("纬度：%.6f °%c\r\n", g_gps_data.latitude, g_gps_data.lat_dir);
+        DEBUG_LOG("经度：%.6f °%c\r\n", g_gps_data.longitude, g_gps_data.lon_dir);
+        DEBUG_LOG("航向：%.2f °\r\n", g_gps_data.course);
+        DEBUG_LOG("速度：%.2f 节 / %.2f 公里/小时\r\n", g_gps_data.speed_knot, g_gps_data.speed_kmh);
     }
     else
     {
-        printf("纬度：未定位\r\n");
-        printf("经度：未定位\r\n");
-        printf("航向：0.00 °\r\n");
-        printf("速度：0.00 节 / 0.00 公里/小时\r\n");
+        DEBUG_LOG("纬度：未定位\r\n");
+        DEBUG_LOG("经度：未定位\r\n");
+        DEBUG_LOG("航向：0.00 °\r\n");
+        DEBUG_LOG("速度：0.00 节 / 0.00 公里/小时\r\n");
     }
   
-    printf("日期：%s\r\n", fmt_date);
-    printf("==============================\r\n\r\n");
+    DEBUG_LOG("日期：%s\r\n", fmt_date);
+    DEBUG_LOG("==============================\r\n\r\n");
 }
 
 

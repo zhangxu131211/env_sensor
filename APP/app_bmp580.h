@@ -7,9 +7,6 @@
 
 /* 外部I2C句柄声明（用户需在主函数中初始化I2C外设） */
 extern I2C_HandleTypeDef hi2c2;
-
-extern struct bmp5_dev bmp580_dev;
-
 #define bmp580_i2c 							hi2c2
 
 /* BMP580 I2C地址（SDO引脚拉低为0x46，拉高为0x47，根据硬件配置修改） */
@@ -21,8 +18,8 @@ typedef struct {
     float temperature;// 温度(°C)
 } BMP580_Data_t;
 
+extern struct bmp5_dev bmp580_dev;
 extern BMP580_Data_t bmp580_data;
-
 
 /* 函数声明 */
 /**
@@ -57,7 +54,10 @@ void BMP580_DelayUs(uint32_t us, void *intf_ptr);
 /**
  * @brief  封装的BMP580测试函数（main直接调用）
  */
+void APP_BMP580_Test(void);
+
 int8_t BMP580_Init(void);
+
 
 #endif /* APP_BMP580_H */
 

@@ -60,3 +60,4 @@ l431-sensor\main.o: ..\BSP\gps.h
 l431-sensor\main.o: ..\APP\gy95t.h
 l431-sensor\main.o: ..\APP\app_env_collect.h
 l431-sensor\main.o: ..\APP\system_state_machine.h
+l431-sensor\main.o: ..\APP\wind_speed.h

@@ -1,8 +1,8 @@
 l431-sensor\system_state_machine.o: ..\APP\system_state_machine.c
 l431-sensor\system_state_machine.o: ..\APP\system_state_machine.h
 l431-sensor\system_state_machine.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-l431-sensor\system_state_machine.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-l431-sensor\system_state_machine.o: ../Core/Inc/main.h
+l431-sensor\system_state_machine.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+l431-sensor\system_state_machine.o: ..\APP\wind_speed.h
 l431-sensor\system_state_machine.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h
 l431-sensor\system_state_machine.o: ../Core/Inc/stm32l4xx_hal_conf.h
 l431-sensor\system_state_machine.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h
@@ -38,8 +38,9 @@ l431-sensor\system_state_machine.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4x
 l431-sensor\system_state_machine.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h
 l431-sensor\system_state_machine.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h
 l431-sensor\system_state_machine.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h
+l431-sensor\system_state_machine.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+l431-sensor\system_state_machine.o: ../Core/Inc/main.h
 l431-sensor\system_state_machine.o: ..\APP\app_env_collect.h
-l431-sensor\system_state_machine.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 l431-sensor\system_state_machine.o: ..\APP\app_bmp580.h
 l431-sensor\system_state_machine.o: ..\BSP\bmp5.h
 l431-sensor\system_state_machine.o: ..\BSP\bmp5_defs.h

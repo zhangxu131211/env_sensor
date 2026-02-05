@@ -21,6 +21,7 @@
 #include "rtc.h"
 #include "gpio.h"
 #include <stdio.h>
+#include "main.h"
 
 /* USER CODE BEGIN 0 */
 // RTC时间结构体（方便读写）
@@ -229,13 +230,13 @@ void RTC_Print_Time(void)
 {
   if(RTC_Read_Time())
   {
-    printf("RTC本地时间：%02d:%02d:%02d  %02d/%02d/20%02d\r\n",
+    DEBUG_LOG("RTC本地时间：%02d:%02d:%02d  %02d/%02d/20%02d\r\n",
            g_rtc_time.hour, g_rtc_time.min, g_rtc_time.sec,
            g_rtc_time.date, g_rtc_time.month, g_rtc_time.year);
   }
   else
   {
-    printf("RTC读取失败！\r\n");
+    DEBUG_LOG("RTC读取失败！\r\n");
   }
 }
 /* USER CODE END 1 */

@@ -1,4 +1,5 @@
 #include "gy95t.h"
+#include "main.h"
 
 
 // 全局变量：存储传感器数据
@@ -35,18 +36,18 @@ HAL_StatusTypeDef GY95T_Drone_Init(void)
 
 		if (GY95T_Init(1) == HAL_OK)
 		{
-				printf("GY95T Init Success!\r\n");
+				DEBUG_LOG("GY95T Init Success!\r\n");
 		}
 		else
 		{
-				printf("GY95T Init Failed!\r\n");
+				DEBUG_LOG("GY95T Init Failed!\r\n");
 		}
 	
     // 2. 配置传感器量程（无人机专用参数）
     status = GY95T_SetRange(ACC_FS_16G, GYRO_FS_2000, MAG_FS_30G, WORK_MODE_HORIZONTAL);
     if (status != HAL_OK)
     {
-        printf("Range Config Failed!\r\n");
+        DEBUG_LOG("Range Config Failed!\r\n");
         return status;
     }
 
@@ -54,7 +55,7 @@ HAL_StatusTypeDef GY95T_Drone_Init(void)
     status = GY95T_WriteReg(0x02, 0x03);
     if (status != HAL_OK)
     {
-        printf("Freq Config Failed!\r\n");
+        DEBUG_LOG("Freq Config Failed!\r\n");
         return status;
     }
 
@@ -62,27 +63,27 @@ HAL_StatusTypeDef GY95T_Drone_Init(void)
     status = GY95T_WriteReg(0x03, 0x00);
     if (status != HAL_OK)
     {
-        printf("Output Mode Config Failed!\r\n");
+        DEBUG_LOG("Output Mode Config Failed!\r\n");
         return status;
     }
 
     // 5. 执行自动校准流程（加陀+磁场校准）
-    printf("=====================================\r\n");
-    printf("GY95T Drone Initialization...\r\n");
+    DEBUG_LOG("=====================================\r\n");
+    DEBUG_LOG("GY95T Drone Initialization...\r\n");
     if (GY95T_AutoCalibrate() == HAL_OK)
     {
         // 读取校准后数据，验证校准效果
         GY95T_ReadData(&gy95t_data);
-        printf("Calibration Completed! Level: %d (100为最佳)\r\n", gy95t_data.level);
-        printf("ACC Range: ±16G | GYRO Range: ±2000°/s | Freq: 200Hz\r\n");
-        printf("Start Data Acquisition...\r\n");
+        DEBUG_LOG("Calibration Completed! Level: %d (100为最佳)\r\n", gy95t_data.level);
+        DEBUG_LOG("ACC Range: ±16G | GYRO Range: ±2000°/s | Freq: 200Hz\r\n");
+        DEBUG_LOG("Start Data Acquisition...\r\n");
     }
     else
     {
-        printf("Calibration Failed! Continue with default data\r\n");
+        DEBUG_LOG("Calibration Failed! Continue with default data\r\n");
         status = HAL_ERROR;
     }
-    printf("=====================================\r\n\r\n");
+    DEBUG_LOG("=====================================\r\n\r\n");
 
     // 6. 掉电保存所有配置（避免重启后参数丢失）
     GY95T_WriteReg(0x05, 0x55);
@@ -110,9 +111,9 @@ HAL_StatusTypeDef GY95T_AutoCalibrate(void)
 {
     HAL_StatusTypeDef status = HAL_OK;
     
-    printf("=====================================\r\n");
-    printf("Auto Calibration Start!\r\n");
-    printf("Step 1: Keep module HORIZONTAL & STABLE\r\n");
+    DEBUG_LOG("=====================================\r\n");
+    DEBUG_LOG("Auto Calibration Start!\r\n");
+    DEBUG_LOG("Step 1: Keep module HORIZONTAL & STABLE\r\n");
     HAL_Delay(1000);
     
     // 加陀校准（手册0x57指令，2秒稳定时间）
@@ -120,42 +121,42 @@ HAL_StatusTypeDef GY95T_AutoCalibrate(void)
     {
         for (int i = 2; i > 0; i--)
         {
-            printf("Acc/Gyro Calibrating... %ds\r\n", i);
+            DEBUG_LOG("Acc/Gyro Calibrating... %ds\r\n", i);
             HAL_Delay(1000);
         }
-        printf("Step 1: Acc/Gyro Calibration Success!\r\n");
+        DEBUG_LOG("Step 1: Acc/Gyro Calibration Success!\r\n");
     }
     else
     {
-        printf("Step 1: Acc/Gyro Calibration Failed!\r\n");
+        DEBUG_LOG("Step 1: Acc/Gyro Calibration Failed!\r\n");
         status = HAL_ERROR;
     }
     
     // 磁场校准（0x58开始→旋转→0x59结束→0x5A保存）
-    printf("\r\nStep 2: Rotate module 360° around 3 axes\r\n");
+    DEBUG_LOG("\r\nStep 2: Rotate module 360° around 3 axes\r\n");
     HAL_Delay(1000);
     
     if (GY95T_Calibrate(0x58) == HAL_OK)
     {
         for (int i = 5; i > 0; i--)
         {
-            printf("Mag Calibrating... Remaining %ds\r\n", i);
+            DEBUG_LOG("Mag Calibrating... Remaining %ds\r\n", i);
             HAL_Delay(1000);
         }
         GY95T_Calibrate(0x59);
         GY95T_Calibrate(0x5A);
-        printf("Step 2: Mag Calibration Success!\r\n");
+        DEBUG_LOG("Step 2: Mag Calibration Success!\r\n");
     }
     else
     {
-        printf("Step 2: Mag Calibration Failed!\r\n");
+        DEBUG_LOG("Step 2: Mag Calibration Failed!\r\n");
         status = HAL_ERROR;
     }
     
     // 保存所有配置（掉电不丢失）
     GY95T_WriteReg(0x05, 0x55);
-    printf("\r\nAll Calibration Data Saved!\r\n");
-    printf("=====================================\r\n\r\n");
+    DEBUG_LOG("\r\nAll Calibration Data Saved!\r\n");
+    DEBUG_LOG("=====================================\r\n\r\n");
     
     return status;
 }

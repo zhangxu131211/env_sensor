@@ -34,7 +34,7 @@ void I2C_SoftReset(I2C_HandleTypeDef *hi2c)
     HAL_I2C_Init(hi2c);
     HAL_Delay(5);
     
-    printf("I2C SoftReset完成，实例: %p\r\n", hi2c);
+    DEBUG_LOG("I2C SoftReset完成，实例: %p\r\n", hi2c);
 }
 
 /**
@@ -64,7 +64,7 @@ static int8_t T117_Collect(void)
     APP_T117_ErrCode err = APP_T117_ReadTemperature(&temp);
     if(err != APP_T117_OK)
     {
-        printf("[T117] Collect Failed, ErrCode: %d\r\n", err);
+        DEBUG_LOG("[T117] Collect Failed, ErrCode: %d\r\n", err);
         return -1;
     }
     g_env_data.t117_temp = temp;
@@ -78,7 +78,7 @@ static int8_t SHT40_Collect(void)
     int32_t ret = SHT40AD1B_ReadData(&hum, &temp);
     if(ret != 0)
     {
-        printf("[SHT40] Collect Failed, Ret: %d\r\n", ret);
+        DEBUG_LOG("[SHT40] Collect Failed, Ret: %d\r\n", ret);
         return -1;
     }
     g_env_data.sht40_temp = temp;
@@ -93,7 +93,7 @@ static int8_t BMP580_Collect(void)
     int8_t ret = APP_BMP580_GetData(&bmp580_dev, &bmp_data);
     if(ret != BMP5_OK)
     {
-        printf("[BMP580] Collect Failed, Ret: %d\r\n", ret);
+        DEBUG_LOG("[BMP580] Collect Failed, Ret: %d\r\n", ret);
         return -1;
     }
     g_env_data.bmp580_temp = bmp_data.temperature;
@@ -112,40 +112,40 @@ int8_t EnvSensor_Init(void)
     uint8_t err_cnt = 0;
     
     // 初始化前复位I2C总线
-    I2C_SoftReset(&hi2c2);
+     I2C_SoftReset(&hi2c2);
     
     // 初始化T117
-    if(APP_T117_Init() != APP_T117_OK)
-    {
-        err_cnt++;
-        printf("[T117] Init Failed\r\n");
-    }
+     if(APP_T117_Init() != APP_T117_OK)
+     {
+         err_cnt++;
+        DEBUG_LOG("[T117] Init Failed\r\n");
+     }
     HAL_Delay(5);
     
     // 初始化SHT40
-    if(SHT40AD1B_Init() != 0)
-    {
-        err_cnt++;
-        printf("[SHT40] Init Failed\r\n");
-    }
-    HAL_Delay(5);
+     if(SHT40AD1B_Init() != 0)
+     {
+         err_cnt++;
+         DEBUG_LOG("[SHT40] Init Failed\r\n");
+     }
+     HAL_Delay(5);
     
     // 初始化BMP580
     if(BMP580_Init() != BMP5_OK)
     {
         err_cnt++;
-        printf("[BMP580] Init Failed\r\n");
+        DEBUG_LOG("[BMP580] Init Failed\r\n");
     }
     
     // 初始化失败则返回错误
     if(err_cnt > 0)
     {
         ret = -1;
-        printf("EnvSensor Init Failed, Err Count: %d\r\n", err_cnt);
+        DEBUG_LOG("EnvSensor Init Failed, Err Count: %d\r\n", err_cnt);
     }
     else
     {
-        printf("EnvSensor Init Success\r\n");
+        DEBUG_LOG("EnvSensor Init Success\r\n");
     }
     return ret;
 }
@@ -165,7 +165,7 @@ int8_t EnvSensor_Collect(EnvSensorData_t *p_data)
     // 检查I2C状态，异常则复位
     if(HAL_I2C_GetState(&hi2c2) != HAL_I2C_STATE_READY)
     {
-        printf("I2C Bus Not Ready, Reset...\r\n");
+        DEBUG_LOG("I2C Bus Not Ready, Reset...\r\n");
         I2C_SoftReset(&hi2c2);
     }
     
@@ -215,20 +215,20 @@ void EnvSensor_MainTask(void)
         // 打印采集结果
         if(collect_ret == 0)
         {
-            printf("===== Env Sensor Data =====\r\n");
+            DEBUG_LOG("===== Env Sensor Data =====\r\n");
             if(g_env_data.t117_ok)
-                printf("T117 Temp: %.4f ℃\r\n", g_env_data.t117_temp);
+                DEBUG_LOG("T117 Temp: %.4f ℃\r\n", g_env_data.t117_temp);
             if(g_env_data.sht40_ok)
-                printf("SHT40 Temp: %.2f ℃, Hum: %.2f %%RH\r\n", 
+                DEBUG_LOG("SHT40 Temp: %.2f ℃, Hum: %.2f %%RH\r\n", 
                        g_env_data.sht40_temp, g_env_data.sht40_humi);
             if(g_env_data.bmp580_ok)
-                printf("BMP580 Temp: %.2f ℃, Press: %.2f hPa\r\n", 
+                DEBUG_LOG("BMP580 Temp: %.2f ℃, Press: %.2f hPa\r\n", 
                        g_env_data.bmp580_temp, g_env_data.bmp580_press);
-            printf("==========================\r\n");
+            DEBUG_LOG("==========================\r\n");
         }
         else
         {
-            printf("EnvSensor Collect Failed, Reset I2C...\r\n");
+            DEBUG_LOG("EnvSensor Collect Failed, Reset I2C...\r\n");
             I2C_SoftReset(&hi2c2);
         }
     }

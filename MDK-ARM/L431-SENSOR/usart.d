@@ -38,3 +38,4 @@ l431-sensor\usart.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h
 l431-sensor\usart.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h
 l431-sensor\usart.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h
 l431-sensor\usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+l431-sensor\usart.o: ..\APP\wind_speed.h

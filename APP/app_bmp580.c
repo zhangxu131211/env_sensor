@@ -70,19 +70,19 @@ int8_t APP_BMP580_Init(struct bmp5_dev *dev)
     dev->delay_us = BMP580_DelayUs;     // 绑定延迟函数
     dev->intf_ptr = NULL;               // 接口指针未使用
 
-    /* BMP580芯片初始化（读取芯片ID、校验等） */
-    rslt = bmp5_init(dev);
-    if (rslt != BMP5_OK)
-    {
-        return rslt;
-    }
+//    /* BMP580芯片初始化（读取芯片ID、校验等） */
+//    rslt = bmp5_init(dev);
+//    if (rslt != BMP5_OK)
+//    {
+//        return rslt;
+//    }
 
-    /* 软复位传感器 */
-    rslt = bmp5_soft_reset(dev);
-    if (rslt != BMP5_OK)
-    {
-        return rslt;
-    }
+//    /* 软复位传感器 */
+//    rslt = bmp5_soft_reset(dev);
+//    if (rslt != BMP5_OK)
+//    {
+//        return rslt;
+//    }
 
     return BMP5_OK;
 }
@@ -180,38 +180,84 @@ int8_t APP_BMP580_GetData(struct bmp5_dev *dev, BMP580_Data_t *data)
 /**
  * @brief  封装的BMP580测试函数（main直接调用）
  */
-int8_t BMP580_Init(void)
+void APP_BMP580_Test(void)
 {
     int8_t ret;
+
+    /* 测试开始提示 */
+    printf("======== BMP580 Test Start ========\r\n");
 
     /* 初始化传感器 */
     ret = APP_BMP580_Init(&bmp580_dev);
     if (ret != BMP5_OK) {
-
+				printf("BMP580 Init Failed %d\r\n", ret);
+    } else {
+        printf("BMP580 Init Success\r\n");
     }
-    printf("BMP580 Init Success\r\n");
 
     /* 配置传感器 */
     ret = APP_BMP580_Config(&bmp580_dev);
     if (ret != BMP5_OK) {
         printf("Config Failed %d\r\n", ret);
     }
-    printf("BMP580 Config Success\r\n");
+    printf("Config Success\r\n");
 
-		return ret;
-//    /* 循环采集并打印数据 */
-//    printf("Pressure(Pa)\tTemperature(°C)\r\n");
-//    printf("----------------------------------------\r\n");
+    /* 循环采集并打印数据 */
+    printf("Pressure(Pa)\tTemperature(°C)\r\n");
+    printf("----------------------------------------\r\n");
 
-//    while (1) {
-//        ret = APP_BMP580_GetData(&bmp580_dev, &bmp580_data);
-//        if (ret == BMP5_OK) {
-//            printf("%.2f\t\t%.2f\r\n", bmp580_data.pressure, bmp580_data.temperature);
-//        } else {
-//            printf("Read Failed (Code: %d)\r\n", ret);
-//        }
-//        HAL_Delay(500); // 500ms采集一次
-//    }
+    while (1) {
+        ret = APP_BMP580_GetData(&bmp580_dev, &bmp580_data);
+        if (ret == BMP5_OK) {
+            printf("%.2f\t\t%.2f\r\n", bmp580_data.pressure, bmp580_data.temperature);
+        } else {
+            printf("Read Failed (Code: %d)\r\n", ret);
+        }
+        HAL_Delay(500); // 500ms采集一次
+    }
 }
 
+int8_t BMP580_Init(void)
+{
+
+    int8_t ret;
+
+    /* 初始化传感器 */
+    ret = APP_BMP580_Init(&bmp580_dev);
+    if (ret != BMP5_OK) {
+        printf("BMP580 Init Failed %d\r\n", ret);
+    } else {
+        printf("BMP580 Init Success\r\n");
+    }
+
+    /* 配置传感器 */
+    ret = APP_BMP580_Config(&bmp580_dev);
+    if (ret != BMP5_OK) {
+        printf("Config Failed %d\r\n", ret);
+    } else {
+			printf("BMP580 Config Success\r\n");
+		}
+
+		return ret;
+	
+//	    int8_t ret;
+
+    /* 测试开始提示 */
+////    printf("======== BMP580 Test Start ========\r\n");
+
+//    /* 初始化传感器 */
+//    ret = APP_BMP580_Init(&bmp580_dev);
+//    if (ret != BMP5_OK) {
+
+//    }
+//    printf("Init Success\r\n");
+
+//    /* 配置传感器 */
+//    ret = APP_BMP580_Config(&bmp580_dev);
+//    if (ret != BMP5_OK) {
+//        printf("Config Failed %d\r\n", ret);
+//    }
+//    printf("Config Success\r\n");
+//		return ret;
+}
 

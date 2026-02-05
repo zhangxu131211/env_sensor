@@ -111,7 +111,7 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(GY95T_INT_GPIO_PORT, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 3, 0); // 优先级低于USART1
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 3, 1); // 优先级低于USART1
   HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 }
 
